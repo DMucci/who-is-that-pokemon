@@ -1,7 +1,7 @@
 //for implementation details visit marinsborg.com
 var apiUrl = "https://pokeapi.co/api/v2/pokemon/?"; //API base URL
-var offset = 0;
-var limit = 10; //limiting Pokemons - sprites are not numbered properly after 665
+var offset = 0; // SOLUTION (buscar en internet cuantos son de 1a gen)
+var limit = 151; //limiting Pokemons - sprites are not numbered properly after 665
 var pokemonUrl = apiUrl + "limit=" + limit + "&offset=" + offset; //complete URL with limit
 var spriteUrl =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"; //base URL from which sprites are fetched
@@ -13,12 +13,21 @@ var streak = 0; //initialize streak to zero
 var pokemonName = ""; //set pokemon name as global variable
 var pokemonData; //variable which holds the response from Pokemon API
 
+//SOLUTION
+var button = document.querySelector("#checkPokemon");
+
 //add event listener on input field and when user presses Enter key, execute the function
 guess.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
+    /*AYUDA*/ --> console.log("Soy e", e)
     checkGuess();
   }
 });
+
+//SOLUTION
+button.addEventListener('click', checkGuess);
+ 
+
 
 // Execute this function to play the audio
 function playPokemonMp3() {
@@ -26,6 +35,9 @@ function playPokemonMp3() {
 
   audio.play();
 }
+
+//SOLUTION BONUS
+guess.addEventListener("focusin", playPokemonMp3)
 
 //function that fetched Pokemon data from the API
 const fetchPokemonData = async function (url) {
@@ -40,10 +52,17 @@ var main = async function () {
 
 //function that compares player's guess with Pokemon name and based on that either increases or resets streak
 function checkGuess() {
-  if (pokemonName.toLowerCase() === guess.value) {
+  console.log("Soy pokemonName fuera " , pokemonName);
+  console.log("Soy guess fuera" , guess.value);
+  console.log("Soy pokemonName en minusc" ,pokemonName.toLowerCase());
+  console.log("Soy guess en minusc" , guess.value.toLowerCase());
+  if (pokemonName.toLowerCase() === guess.value.toLowerCase()) {
     streak++; //correct guess - increase streak by one
-  } else {
+
+  }
+  else {
     streak = 0; //wrong guess - reset streak
+    
   }
   showPokemon(); //call function that will reveal a Pokemon
 }
